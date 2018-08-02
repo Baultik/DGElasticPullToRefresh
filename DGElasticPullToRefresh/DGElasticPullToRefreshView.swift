@@ -45,11 +45,12 @@ enum DGElasticPullToRefreshState: Int {
 // MARK: -
 // MARK: DGElasticPullToRefreshView
 
+@available(iOS 10.0, *)
 open class DGElasticPullToRefreshView: UIView {
     
     // MARK: -
     // MARK: Vars
-    
+    fileprivate var feedback = UISelectionFeedbackGenerator()
     fileprivate var _state: DGElasticPullToRefreshState = .stopped
     fileprivate(set) var state: DGElasticPullToRefreshState {
         get { return _state }
@@ -59,6 +60,7 @@ open class DGElasticPullToRefreshView: UIView {
             
             if previousValue == .dragging && newValue == .animatingBounce {
                 loadingView?.startAnimating()
+                feedback.selectionChanged()
                 animateBounce()
             } else if newValue == .loading && actionHandler != nil {
                 actionHandler()
@@ -66,6 +68,8 @@ open class DGElasticPullToRefreshView: UIView {
                 resetScrollViewContentInset(shouldAddObserverWhenFinished: true, animated: true, completion: { [weak self] () -> () in self?.state = .stopped })
             } else if newValue == .stopped {
                 loadingView?.stopLoading()
+            } else if newValue == .dragging {
+                feedback.prepare()
             }
         }
     }
@@ -193,7 +197,7 @@ open class DGElasticPullToRefreshView: UIView {
     // MARK: -
     // MARK: Notifications
     
-    func applicationWillEnterForeground() {
+    @objc func applicationWillEnterForeground() {
         if state == .loading {
             layoutSubviews()
         }
@@ -355,7 +359,7 @@ open class DGElasticPullToRefreshView: UIView {
         displayLink.isPaused = true
     }
     
-    func displayLinkTick() {
+    @objc func displayLinkTick() {
         let width = bounds.width
         var height: CGFloat = 0.0
         

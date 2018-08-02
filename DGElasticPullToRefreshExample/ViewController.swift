@@ -8,6 +8,7 @@
 
 import UIKit
 
+@available(iOS 10.0, *)
 class ViewController: UIViewController {
 
     // MARK: -
@@ -53,6 +54,7 @@ class ViewController: UIViewController {
 // MARK: -
 // MARK: UITableView Data Source
 
+@available(iOS 10.0, *)
 extension ViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -85,6 +87,7 @@ extension ViewController: UITableViewDataSource {
 // MARK: -
 // MARK: UITableView Delegate
 
+@available(iOS 10.0, *)
 extension ViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

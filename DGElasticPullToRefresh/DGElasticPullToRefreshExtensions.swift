@@ -79,6 +79,7 @@ public extension NSObject {
 // MARK: -
 // MARK: (UIScrollView) Extension
 
+@available(iOS 10.0, *)
 public extension UIScrollView {
     
     // MARK: - Vars
