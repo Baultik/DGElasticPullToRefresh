@@ -100,7 +100,7 @@ public extension UIScrollView {
     
     // MARK: - Methods (Public)
     
-    public func dg_addPullToRefreshWithActionHandler(_ actionHandler: @escaping () -> Void, loadingView: DGElasticPullToRefreshLoadingView?) {
+    public func dg_addPullToRefreshWithActionHandler(_ actionHandler: @escaping () -> Void, loadingView: DGElasticPullToRefreshLoadingView?) -> DGElasticPullToRefreshView {
         isMultipleTouchEnabled = false
         panGestureRecognizer.maximumNumberOfTouches = 1
 
@@ -111,6 +111,7 @@ public extension UIScrollView {
         addSubview(pullToRefreshView)
 
         pullToRefreshView.observing = true
+        return pullToRefreshView
     }
     
     public func dg_removePullToRefresh() {
