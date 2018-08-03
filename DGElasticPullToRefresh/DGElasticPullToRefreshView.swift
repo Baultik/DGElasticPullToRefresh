@@ -79,7 +79,7 @@ open class DGElasticPullToRefreshView: UIView {
     
     fileprivate var displayLink: CADisplayLink!
     
-    var actionHandler: (() -> Void)!
+    public var actionHandler: (() -> Void)!
     
     var loadingView: DGElasticPullToRefreshLoadingView? {
         willSet {
