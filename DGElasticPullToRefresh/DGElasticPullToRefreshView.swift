@@ -26,9 +26,8 @@ SOFTWARE.
 
 import UIKit
 
-// MARK: -
-// MARK: DGElasticPullToRefreshState
 
+// MARK: - DGElasticPullToRefreshState
 public
 enum DGElasticPullToRefreshState: Int {
     case stopped
@@ -42,14 +41,10 @@ enum DGElasticPullToRefreshState: Int {
     }
 }
 
-// MARK: -
-// MARK: DGElasticPullToRefreshView
-
+// MARK: - DGElasticPullToRefreshView
 @available(iOS 10.0, *)
 open class DGElasticPullToRefreshView: UIView {
-    
-    // MARK: -
-    // MARK: Vars
+    // MARK: - Vars
     fileprivate var feedback = UISelectionFeedbackGenerator()
     fileprivate var _state: DGElasticPullToRefreshState = .stopped
     fileprivate(set) var state: DGElasticPullToRefreshState {
@@ -76,7 +71,6 @@ open class DGElasticPullToRefreshView: UIView {
     
     fileprivate var originalContentInsetTop: CGFloat = 0.0 { didSet { layoutSubviews() } }
     fileprivate let shapeLayer = CAShapeLayer()
-    
     fileprivate var displayLink: CADisplayLink!
     
     public var actionHandler: (() -> Void)!
@@ -109,10 +103,8 @@ open class DGElasticPullToRefreshView: UIView {
     
     var fillColor: UIColor = .clear { didSet { shapeLayer.fillColor = fillColor.cgColor } }
     
-    // MARK: Views
-    
+    // MARK: - Views
     fileprivate let bounceAnimationHelperView = UIView()
-    
     fileprivate let cControlPointView = UIView()
     fileprivate let l1ControlPointView = UIView()
     fileprivate let l2ControlPointView = UIView()
@@ -121,14 +113,12 @@ open class DGElasticPullToRefreshView: UIView {
     fileprivate let r2ControlPointView = UIView()
     fileprivate let r3ControlPointView = UIView()
     
-    // MARK: -
-    // MARK: Constructors
-    
+    // MARK: - Constructors
     init() {
         super.init(frame: CGRect.zero)
         
         displayLink = CADisplayLink(target: self, selector: #selector(DGElasticPullToRefreshView.displayLinkTick))
-        displayLink.add(to: RunLoop.main, forMode: RunLoopMode.commonModes)
+        displayLink.add(to: RunLoop.main, forMode: RunLoop.Mode.common)
         displayLink.isPaused = true
         
         shapeLayer.backgroundColor = UIColor.clear.cgColor
@@ -145,7 +135,7 @@ open class DGElasticPullToRefreshView: UIView {
         addSubview(r2ControlPointView)
         addSubview(r3ControlPointView)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(DGElasticPullToRefreshView.applicationWillEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(DGElasticPullToRefreshView.applicationWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
 
     required public init?(coder aDecoder: NSCoder) {
@@ -153,7 +143,6 @@ open class DGElasticPullToRefreshView: UIView {
     }
     
     // MARK: -
-
     /**
     Has to be called when the receiver is no longer required. Otherwise the main loop holds a reference to the receiver which in turn will prevent the receiver from being deallocated.
     */
@@ -166,9 +155,7 @@ open class DGElasticPullToRefreshView: UIView {
         NotificationCenter.default.removeObserver(self)
     }
 
-    // MARK: -
-    // MARK: Observer
-
+    // MARK: - Observer
     override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == DGElasticPullToRefreshConstants.KeyPaths.ContentOffset {
             if let newContentOffset = change?[NSKeyValueChangeKey.newKey], let scrollView = scrollView() {
@@ -194,18 +181,14 @@ open class DGElasticPullToRefreshView: UIView {
         }
     }
 
-    // MARK: -
-    // MARK: Notifications
-    
+    // MARK: - Notifications
     @objc func applicationWillEnterForeground() {
         if state == .loading {
             layoutSubviews()
         }
     }
-    
-    // MARK: -
-    // MARK: Methods (Public)
-    
+
+    // MARK: - Methods (Public)
     fileprivate func scrollView() -> UIScrollView? {
         return superview as? UIScrollView
     }
@@ -218,8 +201,7 @@ open class DGElasticPullToRefreshView: UIView {
         state = .animatingToStopped
     }
     
-    // MARK: Methods (Private)
-    
+    // MARK: - Methods (Private)
     fileprivate func isAnimating() -> Bool {
         return state.isAnyOf([.animatingBounce, .animatingToStopped])
     }
@@ -307,11 +289,9 @@ open class DGElasticPullToRefreshView: UIView {
         }
     }
     
-    fileprivate func animateBounce()
-    {
+    fileprivate func animateBounce() {
         guard let scrollView = scrollView() else { return }
         if (!self.observing) { return }
-        
         
         resetScrollViewContentInset(shouldAddObserverWhenFinished: false, animated: false, completion: nil)
         
@@ -345,12 +325,10 @@ open class DGElasticPullToRefreshView: UIView {
             if let contentInsetTop = self?.originalContentInsetTop {
                 self?.bounceAnimationHelperView.center = CGPoint(x: 0.0, y: contentInsetTop + DGElasticPullToRefreshConstants.LoadingContentInset)
             }
-            }, completion: nil)
+        }, completion: nil)
     }
     
-    // MARK: -
-    // MARK: CADisplayLink
-    
+    // MARK: - CADisplayLink
     fileprivate func startDisplayLink() {
         displayLink.isPaused = false
     }
@@ -382,9 +360,7 @@ open class DGElasticPullToRefreshView: UIView {
         layoutLoadingView()
     }
     
-    // MARK: -
-    // MARK: Layout
-    
+    // MARK: - Layout
     fileprivate func layoutLoadingView() {
         let width = bounds.width
         let height: CGFloat = bounds.height

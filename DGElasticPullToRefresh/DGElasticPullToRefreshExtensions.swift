@@ -99,7 +99,7 @@ public extension UIScrollView {
     }
     
     // MARK: - Methods (Public)
-    
+    @discardableResult
     public func dg_addPullToRefreshWithActionHandler(_ actionHandler: @escaping () -> Void, loadingView: DGElasticPullToRefreshLoadingView?) -> DGElasticPullToRefreshView {
         isMultipleTouchEnabled = false
         panGestureRecognizer.maximumNumberOfTouches = 1
@@ -133,9 +133,7 @@ public extension UIScrollView {
     }
 }
 
-// MARK: -
-// MARK: (UIView) Extension
-
+// MARK: - (UIView) Extension
 public extension UIView {
     func dg_center(_ usePresentationLayerIfPossible: Bool) -> CGPoint {
         if usePresentationLayerIfPossible, let presentationLayer = layer.presentation() {
@@ -146,9 +144,7 @@ public extension UIView {
     }
 }
 
-// MARK: -
-// MARK: (UIPanGestureRecognizer) Extension
-
+// MARK: - (UIPanGestureRecognizer) Extension
 public extension UIPanGestureRecognizer {
     func dg_resign() {
         isEnabled = false
@@ -156,11 +152,10 @@ public extension UIPanGestureRecognizer {
     }
 }
 
-// MARK: -
-// MARK: (UIGestureRecognizerState) Extension
 
-public extension UIGestureRecognizerState {
-    func dg_isAnyOf(_ values: [UIGestureRecognizerState]) -> Bool {
+// MARK: - (UIGestureRecognizerState) Extension
+public extension UIGestureRecognizer.State {
+    func dg_isAnyOf(_ values: [UIGestureRecognizer.State]) -> Bool {
         return values.contains(where: { $0 == self })
     }
 }
